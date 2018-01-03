@@ -1,61 +1,64 @@
-# TOC Project 2017
+# michaelliao_bot
 
-Template Code for TOC Project 2017
+## prerequirement
+ - python3
+ - telegram
+ - network
+ - ngrok (如果使用本機作為伺服器)
 
-A telegram bot based on a finite state machine
+## setup
+    pip3 install -r requirement.txt
 
-## Setup
+## purpose
+1. 讓人體會被女生敷衍的感覺
+2. 搜尋表特板美圖><
 
-### Prerequisite
-* Python 3
+## finite state machine
+![](https://imgur.com/fcLgVCA)
 
-#### Install Dependency
-```sh
-pip install -r requirements.txt
-```
+## usage
+主要有二功能:
+1. **無限敷衍女生**
+不斷的發你洗澡卡，體會絕望的深淵
+2. **表特板搜圖**
+可以透過網路上學的爬蟲功能，找出每個圖片的連結再顯現
 
-* pygraphviz (For visualizing Finite State Machine)
-    * [Setup pygraphviz on Ubuntu](http://www.jianshu.com/p/a3da7ecc5303)
+### how to use
+1. state: intial
+    - input: 任意非空字串
+        - response: 
+            會跳到start state
+            開始事先載入表特板圖片
 
-### Secret Data
+2. state: start
+    - input: hi
+        - response:
+            輸入hi來開始chatbot
+		
 
-`API_TOKEN` and `WEBHOOK_URL` in app.py **MUST** be set to proper values.
-Otherwise, you might not be able to run your code.
+3. state: user
+    - input: chat
+        - response:
+            會跳到chat state
+            開始跟女生聊天
 
-### Run Locally
-You can either setup https server or using `ngrok` as a proxy.
+    - input: beauty
+        - response:
+            會跳到beauty state
+            有兩種功能給使用者選擇，一張或多張圖片
+4. state: chat
+    - input: bath
+        - response:
+            會跳到bath state
+            女生開始洗澡跳回user state
 
-**`ngrok` would be used in the following instruction**
+5. state: beauty
+    - input: photo
+        - response:
+            會跳到photo state
+            回應多張圖片跳回user state
+    - input: one
+        - response:
+            會跳到one state
+            回應一張圖片跳回user state
 
-```sh
-ngrok http 5000
-```
-
-After that, `ngrok` would generate a https URL.
-
-You should set `WEBHOOK_URL` (in app.py) to `your-https-URL/hook`.
-
-#### Run the sever
-
-```sh
-python3 app.py
-```
-
-## Finite State Machine
-![fsm](./img/show-fsm.png)
-
-## Usage
-The initial state is set to `user`.
-
-Every time `user` state is triggered to `advance` to another state, it will `go_back` to `user` state after the bot replies corresponding message.
-
-* user
-	* Input: "go to state1"
-		* Reply: "I'm entering state1"
-
-	* Input: "go to state2"
-		* Reply: "I'm entering state2"
-
-
-## Author
-[Lee-W](https://github.com/Lee-W)

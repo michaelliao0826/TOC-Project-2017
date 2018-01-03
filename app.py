@@ -7,40 +7,80 @@ from flask import Flask, request, send_file
 from fsm import TocMachine
 
 
-API_TOKEN = 'Your Telegram API Token'
-WEBHOOK_URL = 'Your Webhook URL'
+import requests
+from bs4 import BeautifulSoup
+from fsm import get_title
+
+API_TOKEN = '514314352:AAEN0Wkkl47XUjjrDpj1w7N17G7Bf2ZnT0A'
+WEBHOOK_URL = 'https://f3e440df.ngrok.io/hook'
 
 app = Flask(__name__)
 bot = telegram.Bot(token=API_TOKEN)
 machine = TocMachine(
     states=[
+        'initial',
+        'start',
         'user',
-        'state1',
-        'state2'
+        'beauty',
+        'photo',
+        'one',
+        'chat',
+        'bath'
     ],
     transitions=[
         {
             'trigger': 'advance',
-            'source': 'user',
-            'dest': 'state1',
-            'conditions': 'is_going_to_state1'
+            'source': 'initial',
+            'dest': 'start',
+            'conditions': 'is_going_to_start'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'start',
+            'dest': 'user',
+            'conditions': 'is_going_to_user'
         },
         {
             'trigger': 'advance',
             'source': 'user',
-            'dest': 'state2',
-            'conditions': 'is_going_to_state2'
+            'dest': 'beauty',
+            'conditions': 'is_going_to_beauty'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'beauty',
+            'dest': 'photo',
+            'conditions': 'is_going_to_photo'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'beauty',
+            'dest': 'one',
+            'conditions': 'is_going_to_one'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'user',
+            'dest': 'chat',
+            'conditions': 'is_going_to_chat'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'chat',
+            'dest': 'bath',
+            'conditions': 'is_going_to_bath'
         },
         {
             'trigger': 'go_back',
             'source': [
-                'state1',
-                'state2'
+                'photo',
+                'one',
+                'bath'
             ],
             'dest': 'user'
         }
     ],
-    initial='user',
+    initial='initial',
     auto_transitions=False,
     show_conditions=True,
 )
