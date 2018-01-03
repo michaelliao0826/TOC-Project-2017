@@ -14,7 +14,7 @@
 2. 搜尋表特板美圖><
 
 ## finite state machine
-![](https://imgur.com/fcLgVCA)
+![](/img/show_fsm.png)
 
 ## usage
 主要有二功能:
